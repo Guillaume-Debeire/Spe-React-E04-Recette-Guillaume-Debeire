@@ -4,7 +4,12 @@ import { render } from 'react-dom';
 
 // == Import : local
 // Composants
-import Recipe from './components/Recipe';
+
+// Lorsque l'ont fait un import on met un chemin relatif pour aller trouver ce qu'on veut
+// Dans le React-modele on a configuré un resolver qui donne un alias pour src
+// ainsi on peut mettre un chemi nabsolu depuis src
+// import Recipe from './components/Recipe';
+import Recipe from 'src/components/Recipe';
 
 // == Render
 // 1. Elément React racine (celui qui contient l'ensemble de l'app)
