@@ -2,7 +2,7 @@
 
 ## Composants
 
-Dans nos projets React on pourrait décrire toute l'interface en faisant un gros bloc
+Dans nos projets React, on pourrait décrire toute l'interface en faisant un gros bloc
 
 ```js
 import React from 'react';
@@ -22,7 +22,7 @@ const rootElement = (
 render(rootElement, document.getElementById('root'));
 ```
 
-Plutot que de tout faire d'un bloc on va exploiter une architecture de composants, c'est à dire qu'on va exploser tout ça en plein de petit réutilisable et paramétrables. On va faire des fonctions qui renvoient chaque morceau d'interface, des fonctions qui retournent du JSX
+Plutot que de tout faire d'un bloc on va exploiter une architecture de composants, c'est à dire qu'on va exploser tout ça en plein de petit réutilisables et paramétrables. On va faire des fonctions qui renvoient chaque morceau d'interface, des fonctions qui retournent du JSX
 
 ```js
 import React from 'react';
@@ -51,14 +51,14 @@ const rootElement = (
     <Header />
     <Content />
   </div>
-);
+)
 
 render(rootElement, document.getElementById('root'));
 ```
 
-Plutot que de tout écrire dans un seul fichier, on va écrire dans plusieurs, on va exporter d'un coté pour importer la où on se sert des composants
+Plutot que de tout écrire dans un seul fichier, on va écrire dans un plusieurs, on va exporter d'un coté pour importer la ou on se sert des composants
 
-```jsx
+```js
 // Header.js
 import React from 'react';
 
@@ -73,9 +73,9 @@ function Header() {
 export default Header;
 ```
 
-On peut aussi écrire la fonction en fléchée
+On peut aussi écrire la fonction en fléché
 
-```jsx
+```js
 // Header.js
 import React from 'react';
 
@@ -106,182 +106,11 @@ const App = () => (
 export default App;
 ```
 
-### Prop-types
-
-Nos composants peuvent etre configurer en passant des props
-
-```jsx
-// Title.js
-import React from 'react';
-
-const Title = ({ text }) => (
-  <h1>{text}</h1>
-);
-
-export default Title;
-```
-
-Pour éviter de mauvaises utilisations du composant, on va valider le type des données attendues en props
-
-Pour cela on a besoin de la library `prop-types`
-
-```jsx
-// Title.js
-import React from 'react';
-// on importe les types de proptypes avec PropTypes écrit avec une majuscule
-import PropTypes from 'prop-types';
-
-const Title = ({ text }) => (
-  <h1>{text}</h1>
-);
-
-// la propriété qu'on définit sur le composant s'écrit en camelCase
-// on y associe un objet définissant la forme de nos props
-Title.propTypes = {
-  text: PropTypes.string,
-};
-
-export default Title;
-```
-
-Si une props est obligatoire pour le bon fonctionnement de mon composant je l'indique
-
-```jsx
-// Title.js
-import React from 'react';
-import PropTypes from 'prop-types';
-
-const Title = ({ text }) => (
-  <h1>{text}</h1>
-);
-
-Title.propTypes = {
-  text: PropTypes.string.isRequired,
-};
-
-export default Title;
-```
-
-[Doc des proptypes](https://fr.reactjs.org/docs/typechecking-with-proptypes.html)
-
-On pourra valider des types complexes par exemple un tableaux de qqch avec `arrayOf` ou un objet avec une forme spécifique avec `shape`
-
-```js
-Ingredients.propTypes = {
-  listOfIngredients: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.number.isRequired,
-      quantity: PropTypes.number.isRequired,
-      name: PropTypes.string.isRequired,
-      unit: PropTypes.string.isRequired,
-    }),
-  ).isRequired,
-};
-```
-
-## Utilisation de tableau dans du jsx
-
-Lorsqu'on crée un élement React on peut lui passer en enfant un tableau
-
-```js
-const Ingredients = () => {
-  return React.createElement('ul', { className: 'ingredients' }, ['farine', 'sel']);
-}
-```
-
-On peut aussi lui passer un tableau d'elements
-
-```js
-const Ingredients = () => {
-  return React.createElement('ul', { className: 'ingredients' }, [
-    React.createElement('li', null, 'Farine'),
-    React.createElement('li', null, 'Sel'),
-  ]);
-}
-```
-
-On peut se servir de map pour construire un tableau d'élement à partir d'un tableau d'origine
-
-```js
-const Ingredients = ({ listOfIngredients }) => {
-  console.log(listOfIngredients); // ['sucre', 'sel']
-  const myIngredients = listOfIngredients.map((currentIngredient) => {
-    return React.createElement('li', null, currentIngredient);
-  });
-  return React.createElement('ul', { className: 'ingredients' }, myIngredients);
-}
-```
-
-Ou avec jsx
-
-```jsx
-const Ingredients = ({ listOfIngredients }) => {
-  console.log(listOfIngredients); // ['sucre', 'sel']
-  const myIngredients = listOfIngredients.map((currentIngredient) => {
-    return <li>{currentIngredient}</li>;
-  });
-  return (
-    <ul className="ingredients">
-      {myIngredients}
-    </ul>
-  );
-}
-```
-
-On peut meme zapper la variable intermédiaire
-
-```jsx
-const Ingredients = ({ listOfIngredients }) => (
-  <ul className="ingredients"> 
-    {listOfIngredients.map((currentIngredient) => (
-      <li>{currentIngredient}</li>
-    ))}
-  </ul>
-)
-```
-
-Chaque fois qu'on manipule un tableau d'élements React il faut une prop `key` unique qui identifie chaque element du tableau
-Cela permettra à React de continuer à faire des rendus performants
-
-```jsx
-const Ingredients = ({ listOfIngredients }) => (
-  <ul className="ingredients"> 
-    {listOfIngredients.map((currentIngredient) => (
-      <li key={currentIngredient.id}>{currentIngredient.name}</li>
-    ))}
-  </ul>
-)
-```
-
-### Utilisation du spread operator dans du JSX
-
-Le spred operator `...` sert à déverser le contenu d'un objet ou d'un tableau, ça peut etre pratique dans du JSX pour passer toutes les propriétés d'un objet d'un coup en props
-
-Plutot que de passer toutes les valeurs des propriétés une par une
-
-```jsx
-<Ingredient
-  quantity={currentIngredient.quantity}
-  name={currentIngredient.name}
-  unit={currentIngredient.unit}
-/>
-```
-
-Je fais la meme chose en 1 fois en deversant le contenu de l'objet
-
-```jsx
-<Ingredient
-  {...currentIngredient}
-/>
-```
-
 ## SASS
 
-[Doc sass](https://sass-lang.com/documentation)
+Sass est un preprocessor CSS qui nous permet d'écrire du CSS avec des syntaxes supplémentaires, nos fichiers seront analysés par l'outil Sass et transformés en CSS. Avec Webpack ça se fait de manière transparente au moment du build.
 
-Sass est un preprocessor CSS qui nous permet d'écrire du css avec des syntaxe supplémentaires, nos fichiers seront analysés par l'outil sass et transformés en CSS. Avec webpack ça se fait de manière transparente au moment du build
-
-On va utiliser la syntaxe SCSS, il existe aussi la syntaxe SASS sans accolades et sans point virgule
+On va utiliser la syntaxe SCSS, il existe aussi la syntaxe SASS sans accolade et sans point virgule.
 
 ```css
 .content {
@@ -294,15 +123,15 @@ On va utiliser la syntaxe SCSS, il existe aussi la syntaxe SASS sans accolades e
 }
 
 .content-description {
-  font-size: 1.2em;
+  font-size: 1.2em,
 }
 ```
 
 ```scss
-// en sccs déjà on peut faire des commentaires sur une ligne
+// en scss déjà on peut faire des commentaires sur une ligne
 // on peut imbriquer des selecteurs
 .content {
-  background-color: grey,
+  background-color: grey;
 
   .content-title { // .content .content-title
     color: red;
@@ -318,7 +147,7 @@ On va utiliser la syntaxe SCSS, il existe aussi la syntaxe SASS sans accolades e
 // on peut éviter de générer des selecteurs trop longs avec &
 // & sera remplacé par le selecteur parent
 .content {
-  background-color: grey,
+  background-color: grey;
 
   &-title { // .content-title
     color: red;
@@ -350,11 +179,11 @@ div {
 
 ### `::before / ::after`
 
-Il s'agit de 2 pseudo elements css, c'est à dire des selecteur qui permettent de cibler un élement qui n'existe pas vraiment, c'est comme si on ciblait un span en début (before) ou en fin (after) de balise
+Il s'agit de 2 pseudo elements css, c'est à dire des selecteurs qui permettent de cibler un élement qui n'existe pas vraiment, c'est comme si on ciblait un span en début (before) ou en fin (after) de balise
 
-Ce sera pratique pour ajouter des elements purement décoratif
+Ce sera pratique pour ajouter des élement purement décoratif
 
-Pour que le selecteur ai un effet on doit obligatoirement préciser une propriété content
+Pour que le selecteur ait un effet on doit obligatoirement préciser une propriété content
 
 ```css
 .element::before {
@@ -362,12 +191,12 @@ Pour que le selecteur ai un effet on doit obligatoirement préciser une proprié
   color: red;
 }
 
-/* si on ne veut pas mettre de texte on doit mettre une chaine vide */
-.item::after { 
-      content: '';
-      height: 11px;
-      width: 20px;
-      background-color: #F18042;
-      display: inline-block;
-    }
+/* Si on ne veut pas mettre de texte on doit mettre une chaine vide */
+.item::after {
+  content: '';
+  height: 1px;
+  width: 20px;
+  background-color: #F18042;
+  display: inline-block;
+}
 ```

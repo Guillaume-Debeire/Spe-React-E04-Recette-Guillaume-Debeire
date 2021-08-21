@@ -3,8 +3,10 @@ import Header from '../Header';
 import Ingredients from '../Ingredients';
 import Instructions from '../Instructions';
 
+import './style.scss';
+
 const Recipe = () => (
-  <div>
+  <div className="recipe">
     <Header />
     <Ingredients />
     <Instructions />

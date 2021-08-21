@@ -1,10 +1,12 @@
 import React from 'react';
 
+import './style.scss';
+
 const Instructions = () => (
-  <ul>
-    <li>Instruction 1</li>
-    <li>Instruction 2</li>
-    <li>Instruction 3</li>
+  <ul className="instructions">
+    <li className="instructions-item">Instruction 1</li>
+    <li className="instructions-item">Instruction 2</li>
+    <li className="instructions-item">Instruction 3</li>
   </ul>
 );
 

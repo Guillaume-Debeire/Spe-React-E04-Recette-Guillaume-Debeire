@@ -1,10 +1,12 @@
 import React from 'react';
 
+import './style.scss';
+
 const Ingredients = () => (
-  <ul>
-    <li>Ingrédient 1</li>
-    <li>Ingrédient 2</li>
-    <li>Ingrédient 3</li>
+  <ul className="ingredients">
+    <li className="ingredients-item"><span className="ingredients-quantity">375g</span> Farine</li>
+    <li className="ingredients-item"><span className="ingredients-quantity">105</span> Sucre</li>
+    <li className="ingredients-item"><span className="ingredients-quantity">1105g</span> Sel</li>
   </ul>
 );
 
