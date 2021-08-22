@@ -23,7 +23,9 @@ const Recipe = () => (
     <Ingredients
       listOfIngredients={recipe.ingredients}
     />
-    <Instructions />
+    <Instructions
+      listOfInstructions={recipe.instructions}
+    />
   </div>
 );
 
