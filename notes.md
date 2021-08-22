@@ -258,6 +258,28 @@ const Ingredients = ({ listOfIngredients }) => (
 
 [Doc des proptypes](https://fr.reactjs.org/docs/typechecking-with-proptypes.html)
 
+### Utilisation du spread operator dans du JSX
+
+Le spread operator `...` sert à déverser le contenu d'un objet ou d'un tableau, ça peut être pratique dans du JSX pour passer toutes les propriétés d'un objet d'un coup en props
+
+Plutot que de passer toutes les valeurs des propriétés une par une
+
+```jsx
+<Ingredient
+  quantity={currentIngredient.quantity}
+  name={currentIngredient.name}
+  unit={currentIngredient.unit}
+/>
+```
+
+Je fais la meme chose en 1 fois en deversant le contenu de l'objet
+
+```jsx
+<Ingredient 
+  {...currentIngredient}
+/>
+```
+
 ## SASS
 
 [Doc de Sass](https://sass-lang.com/documentation)
