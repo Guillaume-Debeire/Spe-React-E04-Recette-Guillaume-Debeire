@@ -106,7 +106,161 @@ const App = () => (
 export default App;
 ```
 
+## Prop-types
+
+Nos Composants peuvent être configurés en passant des props
+
+```jsx
+// Title.js
+import React from 'react';
+
+const Title = ({ text }) => (
+  <h1>{text}</h1>
+);
+
+export default Title;
+```
+
+Pour éviter de mauvaises utilisations du composant, on va valider le type des données attendues en props
+
+Pour cela on a besoin de la library `prop-types`
+
+```jsx
+// Title.js
+import React from 'react';
+// On importe les types de proptypes avec PropTypes écrit avec une majuscule
+import PropTypes from 'prop-types';
+
+const Title = ({ text }) => (
+  <h1>{text}</h1>
+);
+
+// la propriété qu'on éfinit sur le composant s'écrit en camelCase
+// on y associe un objet définissant la forme de nos props
+Title.propTypes = {
+  text: PropTypes.string,
+}
+
+export default Title;
+```
+
+Si une props est obligatoire pour le bon fonctionnement de mon composant je l'indique
+
+```jsx
+// Title.js
+import React from 'react';
+// On importe les types de proptypes avec PropTypes écrit avec une majuscule
+import PropTypes from 'prop-types';
+
+const Title = ({ text }) => (
+  <h1>{text}</h1>
+);
+
+// la propriété qu'on éfinit sur le composant s'écrit en camelCase
+// on y associe un objet définissant la forme de nos props
+Title.propTypes = {
+  text: PropTypes.string.isRequired,
+}
+
+export default Title;
+```
+
+[Doc des Proptypes](https://fr.reactjs.org/docs/typechecking-with-proptypes.html)
+
+On pourra valider des types complexes par exemple un tableau de qqch avec `arrayOf` ou un objet avec une forme spécifique avec `shape`
+
+```js
+Ingredients.propTypes = {
+  listOfIngredients: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.number.isRequired,
+      quantity: PropTypes.number.isRequired,
+      name: PropTypes.string.isRequired,
+      unit: PropTypes.string.isRequired,
+    }),
+  ).isRequired,
+};
+```
+
+## Utilisation de tableau dans du jsx
+
+Lorsqu'on crée un élement React on peut lui passer en enfant un tableau
+
+```js
+const Ingredients = () => {
+  return React.createElement('ul', { className: 'ingredients' }, ['farine', 'sel']);
+}
+```
+
+On peut aussi lui passer un tableau d'élements
+
+```js
+const Ingredients = () => {
+  return React.createElement('ul', { className: 'ingredients' }, [
+    React.createElement('li', null, 'Farine'),
+    React.createElement('li', null, 'Sucre'),
+  ]);
+}
+```
+
+On peut se servir de map pour construire un tableau d'élements à partir d'un tableau d'origine
+
+```js
+const Ingredients = ({ listOfIngredients }) => {
+  console.log(listOfIngredients); // ['sucre', 'sel']
+  const myIngredients = listOfIngredients.map((currentIngredient) => {
+    return React.createElement('li', null, currentIngredient);
+  });
+  return React.createElement('ul', { className: 'ingredients' }, myIngredients)
+};
+```
+
+Ou avec JSX
+
+```js
+const Ingredients = ({ listOfIngredients }) => {
+  console.log(listOfIngredients); // ['sucre', 'sel']
+  const myIngredients = listOfIngredients.map((currentIngredient) => {
+    return <li>{currentIngredient}</li>;
+  });
+  return (
+    <ul className="ingredients">
+      {myIngredients}
+    </ul>
+  );
+}
+```
+
+On peut même zapper la variable intermédiaire 
+
+```js
+const Ingredients = ({ listOfIngredients }) => (
+  <ul className="ingredients">
+      {listOfIngredients.map((currentIngredient) => (
+        <li>{currentIngredient}</li>
+      ))}
+  </ul>
+)
+```
+
+Chaque fois qu'on manipule un tableau d'élements React il faut une propr `key` unique qui identifie chaque élement du tableau
+Cela permettra à React de continuer à faire des rendus performants
+
+```js
+const Ingredients = ({ listOfIngredients }) => (
+  <ul className="ingredients">
+      {listOfIngredients.map((currentIngredient) => (
+        <li key={currentIngredient.id}>{currentIngredient.name}</li>
+      ))}
+  </ul>
+)
+```
+
+[Doc des proptypes](https://fr.reactjs.org/docs/typechecking-with-proptypes.html)
+
 ## SASS
+
+[Doc de Sass](https://sass-lang.com/documentation)
 
 Sass est un preprocessor CSS qui nous permet d'écrire du CSS avec des syntaxes supplémentaires, nos fichiers seront analysés par l'outil Sass et transformés en CSS. Avec Webpack ça se fait de manière transparente au moment du build.
 

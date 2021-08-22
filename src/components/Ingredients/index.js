@@ -1,13 +1,31 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+import Ingredient from './Ingredient';
 
 import './style.scss';
 
-const Ingredients = () => (
+const Ingredients = ({ listOfIngredients }) => (
   <ul className="ingredients">
-    <li className="ingredients-item"><span className="ingredients-quantity">375g</span> Farine</li>
-    <li className="ingredients-item"><span className="ingredients-quantity">105</span> Sucre</li>
-    <li className="ingredients-item"><span className="ingredients-quantity">1105g</span> Sel</li>
+    {listOfIngredients.map((currentIngredient) => (
+      <Ingredient
+        key={currentIngredient.id}
+        name={currentIngredient.name}
+        quantity={currentIngredient.quantity}
+        unit={currentIngredient.unit}
+      />
+    ))}
   </ul>
 );
+
+Ingredients.propTypes = {
+  listOfIngredients: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.number.isRequired,
+      quantity: PropTypes.number.isRequired,
+      name: PropTypes.string.isRequired,
+      unit: PropTypes.string.isRequired,
+    }),
+  ).isRequired,
+};
 
 export default Ingredients;

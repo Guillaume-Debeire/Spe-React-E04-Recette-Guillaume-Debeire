@@ -1,6 +1,6 @@
 export default {
   title: 'Crêpes trop bonnes',
-  thumbnail: 'https://images.pexels.com/photos/53483/strawberries-crepe-dessert-sweet-53483.jpeg?auto=compress&cs=tinysrgb&h=650&w=940',
+  thumbnail: 'https://images.pexels.com/photos/2613471/pexels-photo-2613471.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260',
   author: 'John Deuf',
   difficulty: 'Facile',
   ingredients: [
